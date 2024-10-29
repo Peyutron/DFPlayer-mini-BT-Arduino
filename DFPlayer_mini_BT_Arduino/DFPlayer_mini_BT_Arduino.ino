@@ -1,26 +1,31 @@
+
 /*
-  DFPlayer Mini BT V2 es un programa para controlar el modulo DFPlayer Mini por Bluetooth.
-  Este programa consta de dos partes, el archivo .ino y el apk para android.
-  Puedes encontrar el programa para su descarga en la seccion de descargas de la web
-  www.infotronikblog.com http://www.infotronikblog.com/p/descargas.html
-
-  Nuevas funciones respecto a la version anterior:
-  -Repeticion automatica de canciones.
-  -Diferentes niveles de ecualizacion (Normal, Pop, Rock, Jazz, Clasica, Base).
-  -Para el reproductor al desconectar el Bluetooth
-
-  Software desarollado por Carlos Muños para www.infotronikblog.com
-  Fecha: 17/09/2017
-*/
-
-
+ * Con DFPlayer Mini BT V2 controlaremos el módulo DFPlayer Mini por Bluetooth.
+ * Este programa consta de dos partes, el archivo .ino y el .apk con la interfaz para android.
+ *
+ * Librería https://github.com/DFRobot/DFPlayer-Mini-mp3 
+ * 
+ * Microcontroladores: Arduino NANO y UNO
+ *
+ * Nuevas funciones v2:
+ * - Repetición automática de canciones.
+ * - Diferentes niveles de ecualización Normal, Pop, Rock, Jazz, Clasica, Base.
+ * - Para el reproductor al desconectar el Bluetooth
+ *
+ * Software desarollado por Carlos Muñoz para https://www.infotronikblog.com
+ * Fecha: 17/09/2017
+ * Revisión: 29/10/2024 
+ * - Librería DFPlayer-Mini-mp3 Obsoleta.
+ * - APK sin probar
+ */
 
 #include <SoftwareSerial.h>
 #include <DFPlayer_Mini_Mp3.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
 SoftwareSerial btSerial(2, 3);
-int busy  = 4;  //Pin estado del modulo
+
+int busy  = 4;  // Pin estado del modulo
 int vol = 15; // Volumen Inicial
 char command;
 String string;
@@ -29,18 +34,31 @@ boolean next_song = true;
 boolean play_state = false;
 
 void setup () {
-  Serial.begin (9600);
-  btSerial.begin  (9600); //Inicia SoftwareSerial para el modulo Bluettoh
-  mySerial.begin (9600);  //Inicia SoftwareSerial para el modulo DFPlayer Mini
-  mySerial.listen();      //Pone a la escucha el modulo DFPlayer Mini
-  mp3_set_serial (mySerial); //Enlaza el SoftwareSerial con DFPlayer Mini
-  delay(10);              
+  Serial.begin (115200);
+  Serial.println(F("DFPlayerMiniBluetooth www.infotronikblog.com"));
+  
+  // Inicia SoftwareSerial para el modulo Bluettoh
+  btSerial.begin  (9600);
+
+  // Inicia SoftwareSerial para el modulo DFPlayer Mini
+  mySerial.begin (9600);
+
+  // Ponemos a la escucha el modulo DFPlayer Mini
+  mySerial.listen();      
+  
+  // Enlaza el SoftwareSerial con DFPlayer Mini
+  mp3_set_serial(mySerial); 
+  delay(10);
+
+  // Reinicia el módulo DFPlayer Mini
   mp3_reset();
-  Serial.println("DFPlayerMiniBluetooth www.infotronikblog.com");
   delay(1000);
+  
   mp3_set_volume (vol); // Valor de 0 ~ 30
   delay(10);
-  mp3_set_EQ (0);  //Ecualizacion Normal por defecto
+  
+  // Ecualizacion Normal por defecto
+  mp3_set_EQ (0);  
   delay(10);
 }
 
@@ -56,7 +74,7 @@ void loop () {
   }
 
   btSerial.listen();
-  delay(50);
+  delay(25);
   if (btSerial.available() > 0)
   {
     string = "";
@@ -77,41 +95,51 @@ void loop () {
   mySerial.listen();
   switch (command) {
 
-    case 'P':
-      reproducir();     // Reproduccion
+    case 'P':   // Reproducción
+      reproducir();     
       break;
-    case 'S':
-      parar();          //Parar
+    
+    case 'S':   // Parar
+      parar();
       break;
-    case  'N':          
-      pista_siguiente();//Pista siguiente
+
+    case  'N':  // Pista siguiente
+      pista_siguiente();
       break;
-    case 'F':          
-      pista_anterior();//Pista anterior
+
+    case 'F':   // Pista anterior
+      pista_anterior();
       break;
-    case 'D':
-      pause();        //Pausa
+
+    case 'D':   // Pausa
+      pause();
       break;
-    case 'H':
-      next_track();   //Siguiente cancion automatica
+
+    case 'H':   // Siguiente canción automatica
+      next_track();   
       break;
-    case 'U':
-      eq0();          //Ecualizador Normal
+
+    case 'U':   // Ecualizador Normal
+      eq0();          
       break;
-    case 'V':
-      eq1();          //Ecualizador Pop
+
+    case 'V':   // Ecualizador Pop
+      eq1();
       break;
-    case 'W':
-      eq2();          //Ecualizador Rock
+
+    case 'W':   // Ecualizador Rock
+      eq2();
       break;
-    case 'X':
-      eq3();          //Ecualizador Jazz  
+
+    case 'X':   // Ecualizador Jazz
+      eq3();
       break;
-    case 'Y':
-      eq4();          //Ecualizador Clasica
+
+    case 'Y':   // Ecualizador Clasica
+      eq4();
       break;
-    case 'Z':
-      eq5();          //Ecualizador Base
+    case 'Z':   // Ecualizador Base
+      eq5();
       break;
     default:
       break;
@@ -131,36 +159,47 @@ void loop () {
   mp3_single_loop(false);
 
 }
-void reproducir() {    // Reproduccion
+
+// Reproducción
+void reproducir() {    
   play_state = true;
   inicio = true;
   mp3_play();
   delay(10);
   Serial.println("Reproduciendo");
 }
+
+// Parar canción
 void parar() {
   play_state = false;
   mp3_stop();
   delay(100);
   Serial.println("Parar");
 }
+
+// Pasar a la siguinte pista
 void pista_siguiente() {
   mp3_next();
   delay(10);
   Serial.println("Pista siguiente");
 }
 
+// Pasar a la pista anterior
 void  pista_anterior() {
   mp3_prev();
   delay(10);
   Serial.println("Pista anterior");
 }
+
+// Pausa la reproducción 
 void pause() {
   play_state = false;
   mp3_pause();
   delay(10);
   Serial.println("Pause, pulse Play para continuar");
 }
+
+// Repite la canción
 void next_track() {
   if (next_song == true ) {
     next_song = false;
@@ -170,34 +209,46 @@ void next_track() {
     Serial.println("Con repeticion");
   }
 }
+
+// Equalización normal
 void eq0() {
   mp3_set_EQ (0);
   Serial.println("Ecualizacion Normal");
   delay(10);
 }
+
+// Equalización Pop
 void eq1() {
   mp3_set_EQ (1);
   Serial.println("Ecualizacion Pop");
   delay(10);
 }
+
+// Equalización Rock
 void eq2() {
   mp3_set_EQ (2);
   Serial.println("Ecualizacion Rock");
   delay(10);
 }
+
+// Equalización Jazz
 void eq3() {
   mp3_set_EQ (3);
   Serial.println("Ecualizacion Jazz");
   delay(10);
 }
+
+// Equalización Clasica
 void eq4() {
   mp3_set_EQ (4);
   Serial.println("Ecualizacion Clasica");
   delay(10);
 }
+
+// Equalización Base
 void eq5() {
   mp3_set_EQ (5);
-  Serial.println("Ecualizacion Basel");
+  Serial.println("Ecualizacion Base");
   delay(10);
 }
 
