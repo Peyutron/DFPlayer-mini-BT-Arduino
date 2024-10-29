@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
+    tools:context="com.infotronikblog.dfplayerminibt.Reproductor"
+    tools:ignore="GradleDependency">
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:drawableStart="@mipmap/ic_play"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_alignBaseline="@+id/btnAnterior"
+        android:layout_alignBottom="@+id/btnAnterior"
+        android:layout_toEndOf="@+id/btnAnterior" />
+
+    <Button
+        android:id="@+id/btnAnterior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/background_light"
+        android:drawableStart="@mipmap/ic_back"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:drawableStart="@mipmap/ic_stop"
+        tools:layout_editor_absoluteX="195dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_alignBaseline="@+id/btnPlay"
+        android:layout_alignBottom="@+id/btnPlay"
+        android:layout_toEndOf="@+id/btnPlay" />
+
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnStop"
+        android:layout_alignBottom="@+id/btnStop"
+        android:layout_toEndOf="@+id/btnStop"
+        android:background="@android:color/background_light"
+        android:drawableStart="@mipmap/ic_next"
+        tools:layout_editor_absoluteX="283dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnPlay"
+        android:layout_marginTop="73dp"
+        android:layout_toStartOf="@+id/idVolumen"
+        android:background="@android:color/background_light"
+        android:backgroundTint="@android:color/background_dark"
+        android:text="Volumen: "
+
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/idVolumen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_dark"
+        android:textColor="@android:color/background_light"
+        android:text="10"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginRight="28dp"
+        android:layout_above="@+id/seekBar"
+        android:layout_toStartOf="@+id/btnSiguiente"
+        android:layout_marginEnd="26dp" />
+
+    <Button
+        android:id="@+id/btnDesconectar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_dark"
+        android:textColor="@android:color/background_light"
+        android:drawableLeft="@mipmap/ic_bt"
+        android:text="Desconectar"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        style="@android:style/Widget.Material.Light.SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:background="@android:color/background_dark"
+        android:max="30"
+        android:progress="1" />
+
+
+</RelativeLayout>
